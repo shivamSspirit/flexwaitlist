@@ -1,0 +1,15 @@
+
+> my-app@0.1.0 dev /Users/shivamsoni/Desktop/waitlist/my-app
+> next dev
+
+ ⚠ Port 3000 is in use by process 10269, using available port 3001 instead.
+   ▲ Next.js 16.0.1 (Turbopack)
+   - Local:        http://localhost:3001
+   - Network:      http://10.229.97.178:3001
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ⨯ Unable to acquire lock at /Users/shivamsoni/Desktop/waitlist/my-app/.next/dev/lock, is another instance of next dev running?
+   Suggestion: If you intended to restart next dev, terminate the other process, and then try again.
+[?25h
+ ELIFECYCLE  Command failed with exit code 1.

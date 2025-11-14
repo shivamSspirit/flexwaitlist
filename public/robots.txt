@@ -1,0 +1,9 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin routes if any
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://flexit.app/sitemap.xml

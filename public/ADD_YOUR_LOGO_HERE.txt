@@ -1,0 +1,8 @@
+Please add your FlexIt logo image here:
+
+1. Save your logo image as: flexit-logo.png
+2. Place it in this directory: /Users/shivamsoni/Desktop/waitlist/my-app/public/
+3. The logo should be a PNG with transparent background
+4. Recommended size: 256x256px or larger
+
+Your logo has been configured to display in the navigation and footer!

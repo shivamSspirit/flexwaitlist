@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FlexIt Viral Waitlist 🚀
 
-## Getting Started
+> Every Post = Coin. Every Creator = Asset.
 
-First, run the development server:
+A high-converting viral waitlist for FlexIt - the anti-rug SocialFi platform built on Solana.
+
+---
+
+## ✨ Features
+
+### 🎯 Viral Mechanics
+- ✅ Referral system (each referral = +3 positions)
+- ✅ Live countdown timer (FOMO)
+- ✅ Real-time slot counter
+- ✅ Position tracking
+- ✅ One-click social sharing
+
+### 📧 Email Automation
+- ✅ Automated welcome emails
+- ✅ Beautiful HTML templates
+- ✅ Referral links included
+- ✅ Social share buttons
+
+### 💎 Premium Design
+- ✅ Clean green color palette
+- ✅ Mobile responsive
+- ✅ Professional branding
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Install dependencies
+pnpm install
+
+# Setup environment variables
+cp .env.example .env.local
+# Edit .env.local with your keys
+
+# Run dev server
+pnpm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📋 Setup
 
-## Learn More
+### 1. Database ✅
+Run SQL in Supabase: `supabase-simple-setup.sql`
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Environment Variables ✅
+Required in `.env.local`:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Optional (for emails):
+```env
+RESEND_API_KEY=re_your_key
+EMAIL_FROM=FlexIt <hello@yourdomain.com>
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. Verify Setup
+```bash
+pnpm run check
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📖 Documentation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **[EMAIL_SETUP.md](EMAIL_SETUP.md)** - Email configuration (5 min setup)
+- **[EMAIL_FEATURE_SUMMARY.md](EMAIL_FEATURE_SUMMARY.md)** - Email features overview
+- **[GENIUS_DEV_FIX.md](GENIUS_DEV_FIX.md)** - Smart dev server docs
+- **[ROOT_CAUSE_FIX.md](ROOT_CAUSE_FIX.md)** - Database setup guide
+
+---
+
+## 🧪 Testing
+
+```bash
+# Check setup status
+pnpm run check
+
+# Run dev server
+pnpm run dev
+
+# Test signup at http://localhost:3000
+```
+
+---
+
+## 🚀 Deployment
+
+Deploy to Vercel:
+1. Push to GitHub
+2. Import to Vercel
+3. Add environment variables
+4. Deploy!
+
+---
+
+## 🐛 Troubleshooting
+
+- **"Service not configured"** → Add `SUPABASE_SERVICE_ROLE_KEY` to `.env.local`
+- **"Table not found"** → Run `supabase-simple-setup.sql` in Supabase
+- **"Port in use"** → Use `pnpm run dev` (auto-handles conflicts)
+- **"Email not received"** → Add `RESEND_API_KEY` to `.env.local`
+
+See docs for detailed solutions.
+
+---
+
+## 🏆 Tech Stack
+
+- Next.js 16 + App Router
+- Supabase (PostgreSQL)
+- Resend (Emails)
+- Tailwind CSS v4
+- TanStack Query
+
+---
+
+Built with 🚀 by a genius developer
+
+**FlexIt** - Every Post = Coin. Every Creator = Asset.

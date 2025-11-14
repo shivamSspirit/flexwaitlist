@@ -1,0 +1,28 @@
+{
+  "name": "FlexIt - SocialFi Revolution",
+  "short_name": "FlexIt",
+  "description": "Every Post = Coin. Every Creator = Asset. Join the anti-rug SocialFi revolution on Solana.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00ff88",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/flexit-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "social", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Join Waitlist",
+      "short_name": "Waitlist",
+      "description": "Join the FlexIt waitlist",
+      "url": "/#waitlist",
+      "icons": [{ "src": "/flexit-logo.png", "sizes": "192x192" }]
+    }
+  ]
+}

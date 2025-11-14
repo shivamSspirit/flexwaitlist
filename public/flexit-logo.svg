@@ -1,0 +1,48 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient definitions -->
+  <defs>
+    <linearGradient id="green-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ddff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="purple-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#aa00ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0088ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="pink-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff0088;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- F shape made of organic blobs -->
+  <!-- Vertical bar (purple) -->
+  <ellipse cx="80" cy="128" rx="35" ry="120" fill="url(#purple-gradient)" filter="url(#glow)" opacity="0.9">
+    <animate attributeName="ry" values="120;125;120" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Top horizontal bar (green) -->
+  <ellipse cx="140" cy="80" rx="90" ry="28" fill="url(#green-gradient)" filter="url(#glow)" opacity="0.95">
+    <animate attributeName="rx" values="90;95;90" dur="2.5s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Middle horizontal bar (pink) -->
+  <ellipse cx="135" cy="145" rx="70" ry="25" fill="url(#pink-gradient)" filter="url(#glow)" opacity="0.9">
+    <animate attributeName="rx" values="70;75;70" dur="3.5s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Decorative circles at ends -->
+  <circle cx="210" cy="80" r="18" fill="url(#green-gradient)" opacity="0.8">
+    <animate attributeName="r" values="18;22;18" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="190" cy="145" r="15" fill="url(#pink-gradient)" opacity="0.8">
+    <animate attributeName="r" values="15;18;15" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>

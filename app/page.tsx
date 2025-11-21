@@ -23,7 +23,13 @@ function WaitlistPageContent() {
 
   const [email, setEmail] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
-  const [successData, setSuccessData] = useState<any>(null);
+  const [successData, setSuccessData] = useState<{
+    referralCode: string;
+    position: number;
+    referralUrl: string;
+    alreadyRegistered?: boolean;
+    message?: string;
+  } | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const { data: stats } = useWaitlistStats();
@@ -93,7 +99,7 @@ function WaitlistPageContent() {
 
   // Nikita Bier Strategy: Specific launch moment (coordinated surge)
   const [launchCountdown, setLaunchCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const launchDate = new Date('2025-03-15T16:00:00-07:00'); // March 15, 4pm PT
+  const launchDate = new Date('2026-01-15T16:00:00-07:00'); // January 15, 2026 4pm PT
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -135,7 +141,7 @@ function WaitlistPageContent() {
     },
     {
       question: "When does it launch?",
-      answer: "March 15, 4pm PT. Everyone on the waitlist gets access simultaneously. Get 3 referrals to skip the wait and get instant access."
+      answer: "January 15, 2026 at 4pm PT. Everyone on the waitlist gets access simultaneously. Get 3 referrals to skip the wait and get instant access."
     },
     {
       question: "What do I get for joining early?",
@@ -162,6 +168,10 @@ function WaitlistPageContent() {
         ${urgencyLevel === 'critical' ? 'pulse-critical' : ''}
       `}>
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between text-sm">
+          {/* Logo on left */}
+          <Logo size="sm" showText={true} />
+
+          {/* Center urgency info */}
           <div className="flex items-center gap-2">
             {urgencyLevel === 'critical' && (
               <div className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
@@ -171,7 +181,7 @@ function WaitlistPageContent() {
               urgencyLevel === 'warning' ? 'text-yellow-400' :
               'text-accent-green'
             }`} />
-            <span className={`font-bold ${
+            <span className={`font-bold hidden sm:inline ${
               urgencyLevel === 'critical' ? 'text-red-400' :
               urgencyLevel === 'warning' ? 'text-yellow-400' :
               'text-white/90'
@@ -179,10 +189,12 @@ function WaitlistPageContent() {
               {isCritical ? 'ALMOST FULL' : isUrgent ? 'FILLING FAST' : 'LIMITED SPOTS'}
             </span>
           </div>
+
+          {/* Right side: countdown and slots */}
           <div className="flex items-center gap-3">
-            <span className="text-white/60 hidden sm:inline">Beta opens:</span>
-            <span className="text-accent-green font-semibold">
-              {launchCountdown.days}d {launchCountdown.hours}h {launchCountdown.minutes}m {launchCountdown.seconds}s
+            <span className="text-white/60 hidden md:inline">Beta opens:</span>
+            <span className="text-accent-green font-semibold hidden sm:inline">
+              {launchCountdown.days}d {launchCountdown.hours}h {launchCountdown.minutes}m
             </span>
             <div className={`px-3 py-1 border rounded-full font-bold ${
               urgencyLevel === 'critical' ? 'bg-red-500/20 border-red-500 text-red-400' :
@@ -206,7 +218,7 @@ function WaitlistPageContent() {
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="text-white">Stop Getting Rugged.</span>
               <br />
-              <span className="text-accent-green">Own Your Value.</span>
+              <span className="text-accent-green">Own Your Flex.</span>
             </h1>
 
             {/* One-line pitch - emotional, not technical */}
@@ -377,7 +389,7 @@ function WaitlistPageContent() {
                       <div className="flex items-start gap-3">
                         <CheckCircleIcon className="h-5 w-5 text-accent-green flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-white font-medium">Access on March 15 at 4pm PT</p>
+                          <p className="text-white font-medium">Access on January 15, 2026 at 4pm PT</p>
                           <p className="text-white/50 text-sm">Mark your calendar - everyone gets in together</p>
                         </div>
                       </div>
@@ -392,7 +404,7 @@ function WaitlistPageContent() {
                         <CheckCircleIcon className="h-5 w-5 text-accent-green flex-shrink-0 mt-0.5" />
                         <div>
                           <p className="text-white font-medium">Your Benefits Locked In</p>
-                          <p className="text-white/50 text-sm">Premium forever + {successData?.position <= 100 ? 'Founder Badge' : 'Beta Access'}</p>
+                          <p className="text-white/50 text-sm">Premium forever + {(successData?.position ?? 0) <= 100 ? 'Founder Badge' : 'Beta Access'}</p>
                         </div>
                       </div>
                     </div>
@@ -454,7 +466,7 @@ function WaitlistPageContent() {
                   ))}
                 </div>
                 <p className="text-white/30 text-xs text-center mt-4">
-                  Updates every 5 seconds
+                  Recent activity
                 </p>
               </div>
             </div>
@@ -522,7 +534,7 @@ function WaitlistPageContent() {
         </section>
 
         {/* Value Proposition - What FlexIt Actually Does */}
-        <section className="py-20 px-6 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+        <section id="how-it-works" className="py-20 px-6 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
               How FlexIt Works
@@ -598,7 +610,7 @@ function WaitlistPageContent() {
 
             {/* Key Benefits */}
             <div className="glass-card rounded-2xl p-8 border border-white/10">
-              <h3 className="text-2xl font-bold text-white mb-6 text-center">Why FlexIt Is Different</h3>
+              <h3 className="text-2xl font-bold text-white mb-6 text-center">For Creators & Investors</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="text-lg font-semibold text-accent-green mb-2">For Creators</h4>
@@ -864,26 +876,10 @@ function WaitlistPageContent() {
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-white/60 hover:text-accent-green text-sm transition-colors flex items-center gap-2"
-                    >
-                      <span>Telegram</span>
-                      <span className="text-white/40">↗</span>
-                    </a>
+                    <span className="text-white/40 text-sm">Telegram - Coming Soon</span>
                   </li>
                   <li>
-                    <a
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-white/60 hover:text-accent-green text-sm transition-colors flex items-center gap-2"
-                    >
-                      <span>Discord</span>
-                      <span className="text-white/40">↗</span>
-                    </a>
+                    <span className="text-white/40 text-sm">Discord - Coming Soon</span>
                   </li>
                 </ul>
               </div>

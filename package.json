@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "setup:db": "node setup-database.js",
+    "setup:db": "node lib/supabase/scripts/setup-database.js",
     "check": "node check-setup.js"
   },
   "dependencies": {

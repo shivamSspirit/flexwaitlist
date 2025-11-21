@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase/server';
+import { WAITLIST_CONFIG } from '@/lib/supabase/config';
+import type { JoinWaitlistRequest } from '@/lib/supabase/types';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -12,18 +14,7 @@ export const runtime = 'nodejs';
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    if (!supabaseUrl || !supabaseServiceKey) {
-      return NextResponse.json({
-        success: false,
-        error: 'Service not configured',
-      }, { status: 500 });
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    const body = await request.json();
+    const body: JoinWaitlistRequest = await request.json();
     const { email, referralCode } = body;
 
     // Validate email
@@ -40,7 +31,7 @@ export async function POST(request: NextRequest) {
     const newReferralCode = generateReferralCode();
 
     // Check if email already exists
-    const { data: existing } = await supabase
+    const { data: existing } = await supabaseAdmin
       .from('waitlist_signups')
       .select('id, email, referral_code, position')
       .eq('email', email)
@@ -63,7 +54,7 @@ export async function POST(request: NextRequest) {
     // Validate referral code if provided
     let referredBy = null;
     if (referralCode) {
-      const { data: referrer } = await supabase
+      const { data: referrer } = await supabaseAdmin
         .from('waitlist_signups')
         .select('referral_code')
         .eq('referral_code', referralCode.toUpperCase())
@@ -76,7 +67,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert new signup
-    const { data: signup, error } = await supabase
+    const { data: signup, error } = await supabaseAdmin
       .from('waitlist_signups')
       .insert({
         email: email.toLowerCase(),
@@ -95,14 +86,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate position in queue
-    const { count } = await supabase
+    const { count } = await supabaseAdmin
       .from('waitlist_signups')
       .select('id', { count: 'exact', head: true });
 
     const position = count || 1;
 
     // Update position
-    await supabase
+    await supabaseAdmin
       .from('waitlist_signups')
       .update({ position })
       .eq('id', signup.id);
@@ -146,25 +137,13 @@ export async function POST(request: NextRequest) {
  */
 export async function GET() {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    if (!supabaseUrl || !supabaseServiceKey) {
-      return NextResponse.json({
-        success: false,
-        error: 'Service not configured',
-      }, { status: 500 });
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
     // Get total signups
-    const { count } = await supabase
+    const { count } = await supabaseAdmin
       .from('waitlist_signups')
       .select('id', { count: 'exact', head: true });
 
     const totalSignups = count || 0;
-    const betaSlots = 100;
+    const betaSlots = WAITLIST_CONFIG.betaSlots;
     const slotsRemaining = Math.max(0, betaSlots - totalSignups);
 
     return NextResponse.json({
@@ -187,11 +166,14 @@ export async function GET() {
   }
 }
 
-// Helper function to generate referral code
+/**
+ * Generate a unique referral code
+ * Uses alphanumeric characters excluding confusing ones (0, O, 1, I, L)
+ */
 function generateReferralCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let result = '';
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < WAITLIST_CONFIG.referralCodeLength; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return result;

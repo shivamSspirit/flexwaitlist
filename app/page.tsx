@@ -77,9 +77,9 @@ function WaitlistPageContent() {
   };
 
   const shareOnTwitter = () => {
-    const text = encodeURIComponent(`Just joined @FlexIt beta - the anti-rug SocialFi platform\n\nEvery Post = Coin. Every Creator = Asset.\n\nBuilt different. Join the waitlist:`);
+    const text = encodeURIComponent(`Just joined @FlexItonsolana beta - the anti-rug SocialFi platform\n\nEvery Post = Coin. Every Creator = Asset.\n\nBuilt different. Join the waitlist:`);
     const url = encodeURIComponent(successData?.referralUrl || '');
-    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+    window.open(`https://x.com/intent/tweet?text=${text}&url=${url}`, '_blank');
   };
 
   const slotsClaimed = stats?.slotsClaimed || 47;
@@ -787,12 +787,12 @@ function WaitlistPageContent() {
 
             <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
               <a
-                href="https://twitter.com/ShivamSspirit"
+                href="https://x.com/FlexItonsolana"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="glass-card px-6 py-3 rounded-lg hover:border-accent-green/40 transition-all border border-white/10"
               >
-                <span className="text-white font-medium text-sm">@ShivamSspirit</span>
+                <span className="text-white font-medium text-sm">@FlexItonsolana</span>
               </a>
               <div className="glass-card px-6 py-3 rounded-lg border border-accent-green/20">
                 <span className="text-accent-green font-semibold text-sm">Solana Grant Winner</span>
@@ -866,7 +866,7 @@ function WaitlistPageContent() {
                 <ul className="space-y-2">
                   <li>
                     <a
-                      href="https://twitter.com/ShivamSspirit"
+                      href="https://x.com/FlexItonsolana"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-white/60 hover:text-accent-green text-sm transition-colors flex items-center gap-2"

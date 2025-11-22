@@ -15,6 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 import { Logo } from '@/components/layout/Logo';
+import Image from 'next/image';
 
 function WaitlistPageContent() {
   const searchParams = useSearchParams();
@@ -443,6 +444,86 @@ function WaitlistPageContent() {
 
         {/* Nikita Bier: Ruthlessly CUT - don't over-explain. Keep only essential value props */}
 
+        {/* Platform Preview - Show what they're getting */}
+        <section className="py-20 px-6">
+          <div className="max-w-6xl mx-auto">
+            {/* Two Column Layout */}
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+
+              {/* Left: Text Content */}
+              <div className="order-2 lg:order-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-green/10 border border-accent-green/30 mb-6">
+                  <SparklesIcon className="h-4 w-4 text-accent-green" />
+                  <span className="text-accent-green text-sm font-medium">Your Profile, Your Asset</span>
+                </div>
+
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+                  Every Creator Gets a <span className="text-accent-green">Tradable Coin</span>
+                </h2>
+
+                <p className="text-white/70 text-lg mb-8 leading-relaxed">
+                  Your profile becomes an investment. Fans buy your coin to support you.
+                  You earn when they trade. No rugs, no dumps - just real value.
+                </p>
+
+                {/* Feature List */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-accent-green/20 flex items-center justify-center flex-shrink-0">
+                      <CheckCircleIcon className="h-5 w-5 text-accent-green" />
+                    </div>
+                    <span className="text-white/80">Creator coins with anti-rug protection</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-accent-green/20 flex items-center justify-center flex-shrink-0">
+                      <CheckCircleIcon className="h-5 w-5 text-accent-green" />
+                    </div>
+                    <span className="text-white/80">Every post becomes a tradable token</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-accent-green/20 flex items-center justify-center flex-shrink-0">
+                      <CheckCircleIcon className="h-5 w-5 text-accent-green" />
+                    </div>
+                    <span className="text-white/80">You own 50% of your creator token supply</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Profile Image */}
+              <div className="order-1 lg:order-2 relative group flex justify-center">
+                {/* Glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-accent-green/30 via-green-500/20 to-accent-green/30 rounded-3xl blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
+
+                {/* Image container with max height */}
+                <div className="relative max-w-[400px] w-full">
+                  {/* Floating elements */}
+                  <div className="absolute -top-3 -right-3 px-3 py-1.5 rounded-lg bg-accent-green text-black font-bold text-xs z-20 shadow-lg shadow-accent-green/30">
+                    $BUILDER
+                  </div>
+                  <div className="absolute -bottom-3 -left-3 px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium text-xs z-20">
+                    21 Posts = 21 Tokens
+                  </div>
+
+                  {/* Image */}
+                  <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-2xl shadow-black/50 max-h-[500px]">
+                    <Image
+                      src="/profiles.jpeg"
+                      alt="FlexIt Creator Profile - Trade creator coins"
+                      width={400}
+                      height={500}
+                      className="w-full h-auto object-cover object-top max-h-[500px]"
+                      priority
+                    />
+
+                    {/* Subtle overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Why FlexIt Is Different - Comparison Table */}
         <section className="py-20 px-6 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
           <div className="max-w-5xl mx-auto">
@@ -673,7 +754,7 @@ function WaitlistPageContent() {
             <div className="grid md:grid-cols-3 gap-4">
               {[
                 {
-                  problem: "Got rugged on friend.tech",
+                  problem: "Got rugged on memecoins?",
                   solution: "FlexIt tokens are locked - creators can't dump on you"
                 },
                 {

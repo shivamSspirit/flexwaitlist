@@ -18,8 +18,7 @@ interface JoinResponse {
 }
 
 /**
- * Hook to fetch waitlist stats (with fake scarcity boost)
- * Nikita Bier Strategy: Add fake scarcity to create urgency
+ * Hook to fetch waitlist stats
  */
 export function useWaitlistStats() {
   return useQuery({
@@ -29,14 +28,12 @@ export function useWaitlistStats() {
       if (!response.ok) throw new Error('Failed to fetch stats');
       const data = await response.json();
 
-      // Nikita Bier trick: Boost numbers to create FOMO
-      const boostedSlotsClaimed = Math.min(95, data.data.slotsClaimed + 40);
-
+      // Return actual stats from database
       return {
         ...data.data,
-        slotsClaimed: boostedSlotsClaimed,
-        slotsRemaining: 100 - boostedSlotsClaimed,
-        percentageFilled: Math.round((boostedSlotsClaimed / 100) * 100),
+        slotsClaimed: data.data.slotsClaimed || 0,
+        slotsRemaining: data.data.slotsRemaining || 500,
+        percentageFilled: data.data.percentageFilled || 0,
       };
     },
     staleTime: 5000,

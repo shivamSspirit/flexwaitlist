@@ -6,4 +6,4 @@ Allow: /
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://flexit.app/sitemap.xml
+Sitemap: https://www.flexitsol.fun/sitemap.xml

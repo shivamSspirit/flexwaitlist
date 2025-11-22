@@ -11,6 +11,7 @@ import {
   ArrowTrendingUpIcon,
   BoltIcon,
   ChevronDownIcon,
+  ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 import { Logo } from '@/components/layout/Logo';
@@ -18,8 +19,6 @@ import { Logo } from '@/components/layout/Logo';
 function WaitlistPageContent() {
   const searchParams = useSearchParams();
   const referralCode = searchParams.get('ref');
-  // Nikita Bier: Hyper-local targeting - track community source
-  const community = searchParams.get('c') || searchParams.get('community');
 
   const [email, setEmail] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
@@ -35,15 +34,6 @@ function WaitlistPageContent() {
   const { data: stats } = useWaitlistStats();
   const joinMutation = useJoinWaitlist();
 
-  // Nikita Bier: Community-specific messaging (school-by-school equivalent)
-  const communityConfig: Record<string, { name: string; members: number; emoji: string }> = {
-    'solana-discord': { name: 'Solana Discord', members: 42, emoji: '🌐' },
-    'ct': { name: 'Crypto Twitter', members: 38, emoji: '🐦' },
-    'friendtech': { name: 'friend.tech', members: 31, emoji: '👥' },
-    'farcaster': { name: 'Farcaster', members: 27, emoji: '🟣' },
-  };
-
-  const currentCommunity = community ? communityConfig[community] : null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,24 +72,24 @@ function WaitlistPageContent() {
     window.open(`https://x.com/intent/tweet?text=${text}&url=${url}`, '_blank');
   };
 
-  const slotsClaimed = stats?.slotsClaimed || 47;
-  const slotsRemaining = stats?.slotsRemaining || 53;
-  const percentFilled = Math.round((slotsClaimed / 100) * 100);
+  const slotsClaimed = stats?.slotsClaimed || 0;
+  const slotsRemaining = stats?.slotsRemaining || 500;
+  const percentFilled = Math.round((slotsClaimed / 500) * 100);
 
   // Nikita Bier: Urgency color coding (psychological triggers)
   const getUrgencyLevel = () => {
-    if (slotsRemaining <= 10) return 'critical';
-    if (slotsRemaining <= 30) return 'warning';
+    if (slotsRemaining <= 50) return 'critical';
+    if (slotsRemaining <= 150) return 'warning';
     return 'safe';
   };
 
   const urgencyLevel = getUrgencyLevel();
-  const isUrgent = slotsRemaining < 50;
-  const isCritical = slotsRemaining < 20;
+  const isUrgent = slotsRemaining < 250;
+  const isCritical = slotsRemaining < 100;
 
   // Nikita Bier Strategy: Specific launch moment (coordinated surge)
   const [launchCountdown, setLaunchCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const launchDate = new Date('2026-01-15T16:00:00-07:00'); // January 15, 2026 4pm PT
+  const launchDate = new Date('2025-12-05T16:00:00-07:00'); // December 5, 2025 4pm PT
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -141,7 +131,7 @@ function WaitlistPageContent() {
     },
     {
       question: "When does it launch?",
-      answer: "January 15, 2026 at 4pm PT. Everyone on the waitlist gets access simultaneously. Get 3 referrals to skip the wait and get instant access."
+      answer: "December 5, 2025 at 4pm PT. Everyone on the waitlist gets access simultaneously. Get 3 referrals to skip the wait and get instant access."
     },
     {
       question: "What do I get for joining early?",
@@ -168,8 +158,14 @@ function WaitlistPageContent() {
         ${urgencyLevel === 'critical' ? 'pulse-critical' : ''}
       `}>
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between text-sm">
-          {/* Logo on left */}
-          <Logo size="sm" showText={true} />
+          {/* Logo on left - click to scroll to top */}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="cursor-pointer"
+            aria-label="Scroll to top"
+          >
+            <Logo size="sm" showText={true} />
+          </button>
 
           {/* Center urgency info */}
           <div className="flex items-center gap-2">
@@ -201,7 +197,7 @@ function WaitlistPageContent() {
               urgencyLevel === 'warning' ? 'bg-yellow-500/20 border-yellow-500 text-yellow-400' :
               'bg-accent-green/10 border-accent-green/30 text-accent-green'
             }`}>
-              {slotsRemaining}/100 LEFT
+              {slotsRemaining}/500 LEFT
             </div>
           </div>
         </div>
@@ -226,27 +222,17 @@ function WaitlistPageContent() {
               Trade creator coins that can't dump on you. Built different.
             </p>
 
-            {/* Nikita Bier: Community-specific social proof (hyper-local) */}
+            {/* Social proof - show real numbers only */}
             <div className="flex items-center justify-center gap-4 mb-10 flex-wrap">
-              {currentCommunity ? (
-                <>
-                  <div className="flex items-center gap-2 glass-card px-4 py-2 rounded-full border border-accent-green/30">
-                    <span className="text-xl">{currentCommunity.emoji}</span>
-                    <span className="text-white/90 font-semibold text-sm">
-                      {currentCommunity.members} from {currentCommunity.name}
-                    </span>
-                  </div>
-                  <span className="text-white/50 text-sm">Join your community on the waitlist</span>
-                </>
-              ) : (
-                <>
-                  <div className="flex items-center gap-2 glass-card px-4 py-2 rounded-full border border-accent-green/30">
-                    <div className="w-2 h-2 bg-accent-green rounded-full animate-pulse"></div>
-                    <span className="text-white/90 font-semibold text-sm">{slotsClaimed} joined today</span>
-                  </div>
-                  <span className="text-white/50 text-sm">Join {slotsClaimed} alpha hunters on the waitlist</span>
-                </>
-              )}
+              <div className="flex items-center gap-2 glass-card px-4 py-2 rounded-full border border-accent-green/30">
+                <div className="w-2 h-2 bg-accent-green rounded-full animate-pulse"></div>
+                <span className="text-white/90 font-semibold text-sm">
+                  {slotsClaimed > 0 ? `${slotsClaimed} on the waitlist` : 'Be the first to join'}
+                </span>
+              </div>
+              <span className="text-white/50 text-sm">
+                {slotsRemaining} spots remaining
+              </span>
             </div>
 
             {/* Progress Bar - Visual FOMO */}
@@ -335,7 +321,7 @@ function WaitlistPageContent() {
 
                         {/* Shareable footer watermark */}
                         <div className="text-xs text-white/30 font-mono">
-                          flexitwaitlist.com
+                          flexitsol.fun
                         </div>
                       </div>
                     </div>
@@ -389,7 +375,7 @@ function WaitlistPageContent() {
                       <div className="flex items-start gap-3">
                         <CheckCircleIcon className="h-5 w-5 text-accent-green flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-white font-medium">Access on January 15, 2026 at 4pm PT</p>
+                          <p className="text-white font-medium">Access on December 5, 2025 at 4pm PT</p>
                           <p className="text-white/50 text-sm">Mark your calendar - everyone gets in together</p>
                         </div>
                       </div>
@@ -436,40 +422,6 @@ function WaitlistPageContent() {
               </div>
             )}
 
-            {/* Nikita Bier: Live Activity Feed - Creates urgency and social proof */}
-            <div className="max-w-2xl mx-auto mb-12">
-              <div className="glass-card rounded-2xl p-6 border border-white/10">
-                <h3 className="text-white font-semibold text-base mb-4 text-center">Live Activity</h3>
-                <div className="space-y-3">
-                  {[
-                    { action: 'just joined', user: '@cryptoking', position: '#47', type: 'join' },
-                    { action: 'referred 3 friends', user: '@solanamaxi', reward: '→ Instant Access', type: 'referral' },
-                    { action: 'claimed Diamond Founder', user: '@degenhunter', position: '#8', type: 'milestone' },
-                    { action: 'just joined', user: '@alphawhale', position: '#52', type: 'join' },
-                    { action: 'moved to position', user: '@buildoor', position: '#23', type: 'move' },
-                  ].map((activity, idx) => (
-                    <div key={idx} className="flex items-center justify-between text-sm py-2 border-b border-white/5 last:border-0">
-                      <div className="flex items-center gap-2">
-                        <div className={`w-1.5 h-1.5 rounded-full ${
-                          activity.type === 'referral' ? 'bg-accent-green' :
-                          activity.type === 'milestone' ? 'bg-yellow-400' :
-                          'bg-blue-400'
-                        }`}></div>
-                        <span className="text-white/60">
-                          <span className="text-accent-green font-semibold">{activity.user}</span> {activity.action}
-                        </span>
-                      </div>
-                      <span className="text-white/40 text-xs">
-                        {activity.position || activity.reward}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-white/30 text-xs text-center mt-4">
-                  Recent activity
-                </p>
-              </div>
-            </div>
 
             {/* Traction Numbers - Simplified */}
             <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
@@ -491,42 +443,91 @@ function WaitlistPageContent() {
 
         {/* Nikita Bier: Ruthlessly CUT - don't over-explain. Keep only essential value props */}
 
-        {/* Simplified: Only show core differentiators */}
-        <section className="py-16 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl md:text-4xl font-bold text-white mb-10">
-              Why FlexIt Is Different
-            </h2>
+        {/* Why FlexIt Is Different - Comparison Table */}
+        <section className="py-20 px-6 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Why FlexIt Is Different
+              </h2>
+              <p className="text-white/60 text-lg max-w-2xl mx-auto">
+                We fixed everything wrong with SocialFi
+              </p>
+            </div>
 
-            {/* Key Features */}
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="glass-card rounded-xl p-6 text-left border border-accent-green/20 hover:border-accent-green/40 transition-all">
-                <div className="flex items-start gap-3 mb-3">
-                  <SparklesIcon className="h-6 w-6 text-accent-green flex-shrink-0" />
-                  <h3 className="text-white font-semibold text-base">Dual Token System</h3>
+            {/* Comparison Table */}
+            <div className="glass-card rounded-2xl border border-white/10 overflow-hidden mb-12">
+              {/* Table Header */}
+              <div className="grid grid-cols-3 bg-white/5 border-b border-white/10">
+                <div className="p-4 md:p-6 text-white/50 font-medium text-sm md:text-base">Feature</div>
+                <div className="p-4 md:p-6 text-center text-red-400/80 font-medium text-sm md:text-base border-l border-white/10">Others</div>
+                <div className="p-4 md:p-6 text-center text-accent-green font-bold text-sm md:text-base border-l border-white/10">FlexIt</div>
+              </div>
+
+              {/* Table Rows */}
+              {[
+                { feature: 'Creator Dumps', others: 'Allowed', flexit: 'Impossible' },
+                { feature: 'Your Trading Data', others: 'Public', flexit: 'Private' },
+                { feature: 'Copy-Trading', others: 'Front-runnable', flexit: 'Privacy-Protected' },
+                { feature: 'Platform Fee', others: '10-20%', flexit: '2.5%' },
+                { feature: 'Token Ownership', others: 'Platform owns', flexit: 'You own 50%' },
+                { feature: 'Liquidity', others: 'Can be pulled', flexit: 'Locked forever' },
+              ].map((row, idx) => (
+                <div key={idx} className={`grid grid-cols-3 ${idx !== 5 ? 'border-b border-white/5' : ''}`}>
+                  <div className="p-4 md:p-5 text-white font-medium text-sm md:text-base">{row.feature}</div>
+                  <div className="p-4 md:p-5 text-center text-red-400/60 text-sm md:text-base border-l border-white/10">{row.others}</div>
+                  <div className="p-4 md:p-5 text-center text-accent-green font-semibold text-sm md:text-base border-l border-white/10">{row.flexit}</div>
                 </div>
-                <p className="text-white/50 text-sm">
-                  Profile tokens (rug-proof, reputation staked) + post tokens (every post is tradable alpha)
+              ))}
+            </div>
+
+            {/* Feature Cards - 2x2 Grid */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="glass-card rounded-2xl p-6 border border-accent-green/20 hover:border-accent-green/40 transition-all group">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-accent-green/10 flex items-center justify-center group-hover:bg-accent-green/20 transition-all">
+                    <ShieldCheckIcon className="h-6 w-6 text-accent-green" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg">Privacy-First Social</h3>
+                </div>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Your trades, your strategy, your business. Private copy-trading means no front-running, no snipers, no one watching your moves.
                 </p>
               </div>
 
-              <div className="glass-card rounded-xl p-6 text-left border border-accent-green/20 hover:border-accent-green/40 transition-all">
-                <div className="flex items-start gap-3 mb-3">
-                  <CheckCircleIcon className="h-6 w-6 text-accent-green flex-shrink-0" />
-                  <h3 className="text-white font-semibold text-base">True Creator Ownership</h3>
+              <div className="glass-card rounded-2xl p-6 border border-accent-green/20 hover:border-accent-green/40 transition-all group">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-accent-green/10 flex items-center justify-center group-hover:bg-accent-green/20 transition-all">
+                    <SparklesIcon className="h-6 w-6 text-accent-green" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg">Dual Token System</h3>
                 </div>
-                <p className="text-white/50 text-sm">
-                  Control your value, community, and destiny. No platform takes your upside.
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Profile tokens are rug-proof (your reputation is staked). Post tokens make every piece of content a tradable asset.
                 </p>
               </div>
 
-              <div className="glass-card rounded-xl p-6 text-left border border-accent-green/20 hover:border-accent-green/40 transition-all">
-                <div className="flex items-start gap-3 mb-3">
-                  <BoltIcon className="h-6 w-6 text-accent-green flex-shrink-0" />
-                  <h3 className="text-white font-semibold text-base">Anti-Rug Design</h3>
+              <div className="glass-card rounded-2xl p-6 border border-accent-green/20 hover:border-accent-green/40 transition-all group">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-accent-green/10 flex items-center justify-center group-hover:bg-accent-green/20 transition-all">
+                    <CheckCircleIcon className="h-6 w-6 text-accent-green" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg">True Creator Ownership</h3>
                 </div>
-                <p className="text-white/50 text-sm">
-                  Built on Solana for speed and security. Not another honeypot. Built different.
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Own 50% of your token from day one. No platform taking your upside. Your community, your value, your destiny.
+                </p>
+              </div>
+
+              <div className="glass-card rounded-2xl p-6 border border-accent-green/20 hover:border-accent-green/40 transition-all group">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-accent-green/10 flex items-center justify-center group-hover:bg-accent-green/20 transition-all">
+                    <BoltIcon className="h-6 w-6 text-accent-green" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg">Anti-Rug Design</h3>
+                </div>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Liquidity locked forever. Creators can't dump on you. Built on Solana for instant, secure transactions.
                 </p>
               </div>
             </div>
@@ -587,14 +588,14 @@ function WaitlistPageContent() {
 
               {/* Copy Trading */}
               <div className="glass-card rounded-2xl p-6 border border-accent-green/20">
-                <h3 className="text-xl font-bold text-accent-green mb-4">Copy-Trade Verified Wallets</h3>
+                <h3 className="text-xl font-bold text-accent-green mb-4">Private Copy-Trading</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-4">
-                  Follow proven traders. Copy their strategies automatically. Earn revenue share when others copy your successful trades.
+                  Follow proven traders privately. Copy their strategies automatically. Your trades stay hidden - no front-running, no snipers.
                 </p>
                 <ul className="space-y-2 text-white/60 text-sm">
                   <li className="flex items-start gap-2">
                     <CheckCircleIcon className="h-4 w-4 text-accent-green flex-shrink-0 mt-0.5" />
-                    <span>Verified wallet tracking</span>
+                    <span>Privacy-protected trades</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircleIcon className="h-4 w-4 text-accent-green flex-shrink-0 mt-0.5" />
@@ -624,10 +625,10 @@ function WaitlistPageContent() {
                 <div>
                   <h4 className="text-lg font-semibold text-accent-green mb-2">For Investors</h4>
                   <ul className="space-y-2 text-white/70 text-sm">
-                    <li>Invest in creators you trust</li>
-                    <li>Copy-trade verified successful wallets</li>
+                    <li>Private trading - no front-running your moves</li>
+                    <li>Copy-trade verified wallets privately</li>
                     <li>No rug risk - tokens are locked forever</li>
-                    <li>Trade alpha and insights as assets</li>
+                    <li>Trade alpha without revealing your strategy</li>
                   </ul>
                 </div>
               </div>
@@ -662,37 +663,31 @@ function WaitlistPageContent() {
           </div>
         </section>
 
-        {/* Nikita Bier: Emotional testimonials - tap into belonging, validation, status */}
+        {/* The Problem We're Solving */}
         <section className="py-16 px-6">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
-              <span className="text-white">Early Members</span>
+              <span className="text-white">Sound Familiar?</span>
             </h2>
 
             <div className="grid md:grid-cols-3 gap-4">
               {[
                 {
-                  quote: "Friend.tech rugged me twice. Lost $8K. This feels different. Finally.",
-                  author: "@cryptoking",
-                  status: "Position #12"
+                  problem: "Got rugged on friend.tech",
+                  solution: "FlexIt tokens are locked - creators can't dump on you"
                 },
                 {
-                  quote: "I made $2K from one post. My followers actually want to support me now.",
-                  author: "@alphawhale",
-                  status: "Diamond Founder"
+                  problem: "Platforms take all your revenue",
+                  solution: "Own 50% of your token + revenue share on referrals"
                 },
                 {
-                  quote: "No more getting dumped on. My reputation is literally on the line. Game changer.",
-                  author: "@solbuilder",
-                  status: "Position #5"
+                  problem: "Your content makes others rich",
+                  solution: "Every post you make becomes a tradable asset you own"
                 },
-              ].map((t, idx) => (
+              ].map((item, idx) => (
                 <div key={idx} className="glass-card rounded-xl p-5 border border-white/10">
-                  <p className="text-white/70 text-sm mb-4 leading-relaxed">&quot;{t.quote}&quot;</p>
-                  <div className="flex items-center justify-between">
-                    <div className="text-accent-green font-semibold text-sm">{t.author}</div>
-                    <div className="text-white/40 text-xs">{t.status}</div>
-                  </div>
+                  <p className="text-red-400/80 text-sm mb-3 line-through">{item.problem}</p>
+                  <p className="text-accent-green text-sm font-medium">{item.solution}</p>
                 </div>
               ))}
             </div>

@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "FlexIt - Every Post = Coin. Every Creator = Asset.",
   description: "Join the anti-rug SocialFi revolution on Solana. FlexIt turns every post into a tradable coin and every creator into an asset. Built different.",
-  metadataBase: new URL('https://flexit.app'),
+  metadataBase: new URL('https://www.flexitsol.fun'),
   keywords: [
     'SocialFi',
     'Solana',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://flexit.app',
+    url: 'https://www.flexitsol.fun',
     title: 'FlexIt - Every Post = Coin. Every Creator = Asset.',
     description: 'Join the anti-rug SocialFi revolution on Solana. FlexIt turns every post into a tradable coin and every creator into an asset. Built different.',
     siteName: 'FlexIt',

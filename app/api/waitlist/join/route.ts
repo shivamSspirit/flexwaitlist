@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
           referralCode: existing.referral_code,
           position: existing.position || 0,
           message: 'You\'re already on the list!',
-          referralUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/?ref=${existing.referral_code}`,
+          referralUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.flexitsol.fun'}/?ref=${existing.referral_code}`,
         },
       });
     }
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
       position,
     });
 
-    const referralUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/?ref=${newReferralCode}`;
+    const referralUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.flexitsol.fun'}/?ref=${newReferralCode}`;
 
     // Email sending disabled - contact users later from database
     console.log('📧 [EMAIL] Skipping welcome email - signup saved for later contact');

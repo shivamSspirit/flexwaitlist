@@ -10,8 +10,14 @@ export const SUPABASE_CONFIG = {
 
 export const WAITLIST_CONFIG = {
   tableName: 'waitlist_signups',
-  betaSlots: 100,
+  betaSlots: 500,
   referralCodeLength: 8,
+} as const;
+
+export const STORAGE_CONFIG = {
+  bucketName: 'flex_wait',
+  maxFileSize: 5 * 1024 * 1024, // 5MB
+  allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
 } as const;
 
 /**

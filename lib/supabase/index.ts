@@ -9,7 +9,7 @@
 
 export { supabase } from './client';
 export { supabaseAdmin } from './server';
-export { SUPABASE_CONFIG, WAITLIST_CONFIG, validateSupabaseConfig } from './config';
+export { SUPABASE_CONFIG, WAITLIST_CONFIG, STORAGE_CONFIG, validateSupabaseConfig } from './config';
 export type {
   WaitlistSignup,
   WaitlistStats,

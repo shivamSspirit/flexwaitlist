@@ -2,10 +2,9 @@
 -- This will create everything from scratch
 
 -- 1. Drop everything first (clean slate)
-DROP TRIGGER IF EXISTS trigger_update_referral_count ON waitlist_signups CASCADE;
+DROP TABLE IF EXISTS waitlist_signups CASCADE;
 DROP FUNCTION IF EXISTS update_referral_count() CASCADE;
 DROP FUNCTION IF EXISTS generate_referral_code() CASCADE;
-DROP TABLE IF EXISTS waitlist_signups CASCADE;
 
 -- 2. Create the table
 CREATE TABLE waitlist_signups (

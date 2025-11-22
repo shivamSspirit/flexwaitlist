@@ -28,10 +28,11 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', className = '', showTex
       />
       {showText && (
         <span
-          className={`font-black ${fontSize} bg-gradient-to-r from-accent-green via-accent-cyan to-accent-purple bg-clip-text text-transparent tracking-tighter`}
+          className={`font-black ${fontSize} tracking-tight`}
           style={{ fontFamily: "'Space Grotesk', sans-serif" }}
         >
-          FlexIt
+          <span className="text-white">Flex</span>
+          <span className="text-accent-green">It</span>
         </span>
       )}
     </div>
